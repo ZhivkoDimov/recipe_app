@@ -34,24 +34,54 @@ class _MainScreenState extends State<MainScreen> {
             controller: _pageController,
             children: [
               Center(
-                child: CustomCard(
-                  title: "Breakfast",
-                  description: "Start your day with a healthy breakfast.",
-                  icon: Icons.breakfast_dining,
+                child: ListView(
+                  children: [
+                    CustomCard(
+                      title: "Pancakes",
+                      description: "Fluffy pancakes with syrup.",
+                      icon: Icons.breakfast_dining,
+                    ),
+                    CustomCard(
+                      title: "Omelette",
+                      description: "Delicious omelette with vegetables.",
+                      icon: Icons.breakfast_dining,
+                    ),
+                    // Add more breakfast recipes here
+                  ],
                 ),
               ),
               Center(
-                child: CustomCard(
-                  title: "Lunch",
-                  description: "Enjoy a nutritious lunch to keep you energized.",
-                  icon: Icons.lunch_dining,
+                child: ListView(
+                  children: [
+                    CustomCard(
+                      title: "Caesar Salad",
+                      description: "Fresh Caesar salad with dressing.",
+                      icon: Icons.lunch_dining,
+                    ),
+                    CustomCard(
+                      title: "Grilled Chicken",
+                      description: "Juicy grilled chicken with sides.",
+                      icon: Icons.lunch_dining,
+                    ),
+                    // Add more lunch recipes here
+                  ],
                 ),
               ),
               Center(
-                child: CustomCard(
-                  title: "Dinner",
-                  description: "End your day with a delightful dinner.",
-                  icon: Icons.dinner_dining,
+                child: ListView(
+                  children: [
+                    CustomCard(
+                      title: "Spaghetti Bolognese",
+                      description: "Classic spaghetti with meat sauce.",
+                      icon: Icons.dinner_dining,
+                    ),
+                    CustomCard(
+                      title: "Steak",
+                      description: "Grilled steak with vegetables.",
+                      icon: Icons.dinner_dining,
+                    ),
+                    // Add more dinner recipes here
+                  ],
                 ),
               ),
             ],
