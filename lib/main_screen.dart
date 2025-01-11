@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'models/recipe.dart'; // Import the Recipe class
-import 'models/workout.dart'; // Import the Workout class
+import 'models/recipe.dart'; 
+import 'models/workout.dart'; 
+
 
 class MainScreen extends StatefulWidget {
   @override
@@ -8,11 +9,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String selectedType = 'Breakfast'; // Default type
-  List<Recipe> recipes = []; // Change to List<Recipe>
-  int _selectedIndex = 0; // Track the selected index for the bottom navigation
+  String selectedType = 'Breakfast'; 
+  List<Recipe> recipes = [];
+  int _selectedIndex = 0; 
 
-  // Define workout data using the Workout class
+ 
   List<Workout> workouts = [
     Workout(
       day: 'Monday',
@@ -38,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         '6. Standing Calf Raises: 4 sets x 15-20 reps',
       ],
     ),
-    // Add more workout days as needed
+    
     Workout(
       day: 'Wednesday',
       type: 'Cardio/Active Recovery',
@@ -93,12 +94,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     loadRecipes();
-    // Initialize completed exercises list
     completedExercises = List.generate(workouts.length, (index) => List.filled(workouts[index].exercises.length, false));
   }
 
   void loadRecipes() {
-    // Sample recipes
     recipes = [
       Recipe(
         id: '1',
@@ -120,7 +119,6 @@ class _MainScreenState extends State<MainScreen> {
         instructions: ['Boil spaghetti', 'Prepare sauce'],
         category: 'Dinner',
       ),
-      // Add more recipes as needed
     ];
   }
 
