@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'models/recipe.dart'; 
-import 'models/workout.dart'; 
+import 'models/recipe.dart';
+import 'models/workout.dart';
+import 'Widgets/recipe.dart';
+import 'Widgets/workouts.dart';
+import 'models/new_recipe.dart';
 
+enum SelectedType { recipes, workouts }
 
 class MainScreen extends StatefulWidget {
   @override
@@ -9,11 +13,29 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String selectedType = 'Breakfast'; 
-  List<Recipe> recipes = [];
-  int _selectedIndex = 0; 
-
- 
+  SelectedType selectedType = SelectedType.recipes;
+  List<Recipe> recipes = [
+    Recipe(
+        id: '1',
+        title: 'Pancakes',
+        prepTime: 10,
+        cookTime: 15,
+        description: 'Fluffy pancakes for breakfast.',
+        ingredients: ['Flour', 'Milk', 'Eggs', 'Sugar', 'Baking Powder'],
+        instructions: ['Mix ingredients', 'Cook on skillet'],
+        category: 'Breakfast',
+      ),
+      Recipe(
+        id: '2',
+        title: 'Spaghetti',
+        prepTime: 15,
+        cookTime: 20,
+        description: 'Classic spaghetti with tomato sauce.',
+        ingredients: ['Spaghetti', 'Tomato Sauce', 'Garlic', 'Olive Oil'],
+        instructions: ['Boil spaghetti', 'Prepare sauce'],
+        category: 'Dinner',
+      ),
+  ];
   List<Workout> workouts = [
     Workout(
       day: 'Monday',
@@ -39,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
         '6. Standing Calf Raises: 4 sets x 15-20 reps',
       ],
     ),
-    
+    // Add more workout days as needed
     Workout(
       day: 'Wednesday',
       type: 'Cardio/Active Recovery',
@@ -87,103 +109,77 @@ class _MainScreenState extends State<MainScreen> {
       ],
     ),
   ];
+  late List<List<bool>> completedExercises;
 
-  List<List<bool>> completedExercises = [];
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    loadRecipes();
-    completedExercises = List.generate(workouts.length, (index) => List.filled(workouts[index].exercises.length, false));
-  }
-
-  void loadRecipes() {
-    recipes = [
-      Recipe(
-        id: '1',
-        title: 'Pancakes',
-        prepTime: 10,
-        cookTime: 15,
-        description: 'Fluffy pancakes for breakfast.',
-        ingredients: ['Flour', 'Milk', 'Eggs', 'Sugar', 'Baking Powder'],
-        instructions: ['Mix ingredients', 'Cook on skillet'],
-        category: 'Breakfast',
-      ),
-      Recipe(
-        id: '2',
-        title: 'Spaghetti',
-        prepTime: 15,
-        cookTime: 20,
-        description: 'Classic spaghetti with tomato sauce.',
-        ingredients: ['Spaghetti', 'Tomato Sauce', 'Garlic', 'Olive Oil'],
-        instructions: ['Boil spaghetti', 'Prepare sauce'],
-        category: 'Dinner',
-      ),
-    ];
+    completedExercises = List.generate(
+      workouts.length,
+      (index) => List.filled(workouts[index].exercises.length, false),
+    );
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      selectedType = index == 0 ? 'Meals' : 'Workouts'; // breyta 
+      selectedType = index == 0 ? SelectedType.recipes : SelectedType.workouts;
     });
+  }
+
+  void _addRecipe(Recipe recipe) {
+    setState(() {
+      recipes.add(recipe);
+    });
+  }
+
+  void _openAddRecipeOverlay() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewRecipe(onAddRecipe: _addRecipe),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipes - $selectedType'),
+        title: const Text('Gym Ready!'),
+        actions: [
+          if (selectedType == SelectedType.recipes)
+            IconButton(
+              onPressed: _openAddRecipeOverlay,
+              icon: const Icon(Icons.add),
+            ),
+        ],
       ),
-      body: _selectedIndex == 0
-          ? ListView.builder(
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = recipes[index];
-                return ButtonBar(
-                  children: [
-                    Text(recipe.title),
-                    Text(recipe.description),
-                    Text('${recipe.prepTime} min prep, ${recipe.cookTime} min cook'),
-                  ],
-                );
-              },
-            )
-          : ListView.builder(
-              itemCount: workouts.length,
-              itemBuilder: (context, index) {
-                final workout = workouts[index];
-                return ExpansionTile(
-                  title: Text(workout.day),
-                  children: workout.exercises.map<Widget>((exercise) {
-                    int exerciseIndex = workout.exercises.indexOf(exercise);
-                    return CheckboxListTile(
-                      title: Text(exercise),
-                      value: completedExercises[index][exerciseIndex],
-                      onChanged: (bool? value) {
-                        setState(() {
-                          completedExercises[index][exerciseIndex] = value ?? false;
-                        });
-                      },
-                    );
-                  }).toList(),
-                );
+      body: selectedType == SelectedType.recipes
+          ? RecipeWidget(recipes: recipes)
+          : WorkoutWidget(
+              workouts: workouts,
+              completedExercises: completedExercises,
+              onExerciseChanged: (workoutIndex, exerciseIndex, value) {
+                setState(() {
+                  completedExercises[workoutIndex][exerciseIndex] = value;
+                });
               },
             ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.fastfood),
-            label: 'Meals',
+            label: 'Recipes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
             label: 'Workouts',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
       ),
     );
   }
