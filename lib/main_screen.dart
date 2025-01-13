@@ -61,7 +61,6 @@ class _MainScreenState extends State<MainScreen> {
         '6. Standing Calf Raises: 4 sets x 15-20 reps',
       ],
     ),
-    // Add more workout days as needed
     Workout(
       day: 'Wednesday',
       type: 'Cardio/Active Recovery',
@@ -147,7 +146,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gym Ready!'),
+        title: SizedBox(height: 35, child: Container(child: Center(child: Text('Gym Ready!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,),),),),),
+  
         actions: [
           if (selectedType == SelectedType.recipes)
             IconButton(

@@ -59,7 +59,7 @@ class recipeBucket {
     double sum = 0;
 
     for (final recipe in recipes) {
-      sum += recipe.prepTime; // sum = sum + recipe.prepTime
+      sum += recipe.prepTime; 
     }
 
     return sum;
