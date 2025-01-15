@@ -6,18 +6,6 @@ const uuid = Uuid();
 
 enum Category { breakfast, lunch, dinner }
 
-const categoryIcons = {
-  Category.breakfast: Icons.breakfast_dining,
-  Category.lunch: Icons.lunch_dining,
-  Category.dinner: Icons.dinner_dining,
-};
-
-const categoryColors = {
-  Category.breakfast: Color.fromRGBO(253, 226, 74, 1),
-  Category.lunch: Color.fromARGB(255, 136, 252, 83),
-  Category.dinner: Color.fromRGBO(125, 73, 248, 1),
-};
-
 
 class Recipe {
   final String id;
@@ -28,6 +16,7 @@ class Recipe {
   final List<String> ingredients;
   final List<String> instructions;
   final String category;
+  final String imageUrl; 
 
   Recipe({
     required this.id,
@@ -38,8 +27,11 @@ class Recipe {
     required this.ingredients,
     required this.instructions,
     required this.category,
+    required this.imageUrl, 
   });
 }
+
+
 
 class recipeBucket {
   const recipeBucket({

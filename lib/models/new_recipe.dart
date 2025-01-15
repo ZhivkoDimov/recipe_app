@@ -19,6 +19,7 @@ class NewRecipe extends StatefulWidget {
   final _instructionsController = TextEditingController();
   final _ingredientsController = TextEditingController();
   Category _selectedCategory = Category.breakfast;
+  final _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
@@ -65,6 +66,7 @@ class NewRecipe extends StatefulWidget {
         ingredients: _ingredientsController.text.split(',').map((ingredient) => ingredient.trim()).toList(),
         instructions: _instructionsController.text.split(',').map((instruction) => instruction.trim()).toList(),
         category: _selectedCategory.name,
+        imageUrl: _imageUrlController.text,
     ));
     Navigator.pop(context);
   }
@@ -90,7 +92,7 @@ class NewRecipe extends StatefulWidget {
                   keyboardType: TextInputType.number,
                   maxLength: 10,
                   decoration: const InputDecoration(
-                    prefixText: '\min',
+                    suffixText: 'min',
                     label: Text('Prep time'),
                     prefixIcon: Icon(Icons.timer),
                   ),
